@@ -7,6 +7,15 @@
     <title>テストWebアプリ</title>
 </head>
 <body>
-    <h1>test.html表示してます</h1>
+    <h1>初心者です</h1>
+    <p>{{ chinman.thing1 }}</p>
+    <p>{{ chinman.thing2 }}</p>
+
+    <h2>それは</h2>
+    <ul>
+        {% for seiki in chinman.things %}
+            <li>{{ seiki }}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

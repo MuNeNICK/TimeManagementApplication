@@ -11,3 +11,11 @@ services:
       FLASK_ENV: "development"
     command: flask run --host=0.0.0.0
     restart: always
+
+  db:
+    build: ./mysql/
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+      - ./mysql/sqls:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=Me1onpan#
