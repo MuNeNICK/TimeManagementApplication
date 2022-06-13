@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<body>
+    <h1>じゃんけんコーナー</h1>
+    おれとガンダムしようぜ
+    <form action="/batoope" method="POST">
+        <input type="radio" name="gundam" value="0" checked>汎用機</input>
+        <input type="radio" name="gundam" value="1" >支援機</input>
+        <input type="radio" name="gundam" value="2" >強襲機</input>
+        <button type="submit">出撃</button>
+    </form>
+</body>
+
+{% endblock %}

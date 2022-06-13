@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template,request
 from app import app 
 
 @app.route('/')
@@ -14,6 +14,11 @@ def test():
     }
     return render_template('/test.html',chinman=chinman)
 
-@app.route('/kasuform')
+@app.route('/kasuform', methods=['GET','POST'])
 def kasuform():
-    return render_template('/kasuform.html')
+    if request.method == 'GET':
+        return render_template('/kasuform.html')
+    if request.method == 'POST':
+        print('データうけとった')
+        data=request.form['dat']
+        return f'おまえ{data}っておくってきただろ'
