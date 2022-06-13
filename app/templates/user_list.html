@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>ユーザー一覧</h2>
+    <ul>
+        {% for user in users %}
+            <li>名前: {{ user.name }} メール: {{ user.mail }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

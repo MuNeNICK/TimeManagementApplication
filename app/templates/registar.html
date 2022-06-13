@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>データの追加だけ行うページ</h2>
+    <form action="/registar" method="POST">
+        <label for="name">ユーザー名</label>
+        <input name="name"></input><br>
+
+        <label for="mail">メールアドレス</label>
+        <input name="mail"></input><br>
+
+        <label for="password">パスワード</label>
+        <input name="password"></input><br>
+
+        <button type="submit" class="btn btn-primary">従業員追加</button>
+    </form>
+</div>
+{% endblock %}

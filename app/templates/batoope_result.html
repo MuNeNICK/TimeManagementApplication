@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>戦闘結果</h2>
+    <p>おまえ: {{ result.player_kitai_ja }}</p>
+    <p>おれ: {{ result.enemy_kitai_ja }}</p>
+    <p>戦闘結果: {{ result.judgement }}</p>
+
+    {% if result.judgement == 'お前の負け🤪頼りになるな！' %}
+        <img src="{{url_for('static',filename='img/gundam2.png') }}">
+    {% elif result.judgement == 'お前の勝ち！さすがだ！' %}
+        <img src="{{url_for('static',filename='img/gundam1.png')}}">
+    {% %}
+    {% endif %}
+
+    <p>
+        <a href="{{ url_for('batoope') }}">再戦</a>
+    </p>
+</div>
+
+{% endblock %}
