@@ -3,10 +3,33 @@
 {% block content %}
 <div class="container mt-4">
     <h2>ユーザー一覧</h2>
-    <ul>
-        {% for user in users %}
-            <li>名前: {{ user.name }} メール: {{ user.mail }}</li>
-        {% endfor %}
-    </ul>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">名前</th>
+              <th scope="col">メール</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <th scope="row">{{ user.id }}</th>
+              <td>
+                <a class="text-decoration-none" href="{{ url_for('user_detail', id=user.id) }}">
+                  {{ user.name }}
+                </a>
+              </td>
+              <td>{{ user.mail }}</td>
+              <td>
+                <form action="{{ url_for('user_delete', id=user.id) }}" method="POST">  
+                    <input class="btn btn-danger btn-sm" type="submit" value="削除">  
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
 </div>
 {% endblock %}

@@ -36,6 +36,35 @@ def users_list():
     users = User_info.query.all()
     return render_template('/user_list.html', users=users)
 
+@app.route('/users/<int:id>')
+def user_detail(id):
+    user = User_info.query.get(id)
+    return render_template('/user_detail.html', user=user)
+
+@app.route('/users/<int:id>/edit', methods=['GET'])
+def user_edit(id):
+    # 編集ページ表示用
+    user = User_info.query.get(id)
+    return render_template('/user_edit.html', user=user)
+
+@app.route('/users/<int:id>/update', methods=['POST'])
+def user_update(id):
+    user = User_info.query.get(id)  # 更新するデータをDBから取得
+    user.name = request.form.get('name')
+    user.mail = request.form.get('mail')
+    user.password = request.form.get('password')
+
+    db.session.merge(user)
+    db.session.commit()
+    return redirect(url_for('users_list'))
+
+@app.route('/users/<int:id>/delete', methods=['POST'])  
+def user_delete(id):  
+    user = User_info.query.get(id)   
+    db.session.delete(user)  
+    db.session.commit()  
+    return redirect(url_for('users_list'))
+
 @app.route('/test')
 def test():
     chinman = { 

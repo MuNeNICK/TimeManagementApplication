@@ -2,25 +2,25 @@
 
 {% block content %}
 <!-- <div class="container mt-4">
-    <h2>データの追加だけ行うページ</h2>
-    <form action="/registar" method="POST">
+    <h2>データの編集ページ</h2>
+    <form action="{{ url_for('user_update', id=user.id) }}" method="POST">
         <label for="name">ユーザー名</label>
-        <input name="name"></input><br>
+        <input name="name"></input>
 
         <label for="mail">メールアドレス</label>
-        <input name="mail"></input><br>
+        <input name="mail"></input>
 
         <label for="password">パスワード</label>
-        <input name="password"></input><br>
+        <input name="password"></input>
 
-        <button type="submit" class="btn btn-primary">アカウント作成</button>
+        <button type="submit" class="btn btn-primary">更新</button>
     </form>
 </div> -->
 <div class="container mt-5 mb-5 d-flex justify-content-center">
 	<div class="card px-1 py-4" style="width: 400px;">
 		<div class="card-body">
-			<h6 class="card-title mb-3">データの追加だけ行うページ</h6>
-			<form action="/registar" method="POST">
+			<h6 class="card-title mb-3">データの編集ページ</h6>
+			<form action="{{ url_for('user_update', id=user.id) }}" method="POST">
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="form-group">
@@ -47,7 +47,7 @@
 				</div>
 				<div class="row mt-3">
 					<div class="col text-center">
-						<button type="submit" class="btn btn-primary">アカウント作成</button>
+						<button type="submit" class="btn btn-primary">更新</button>
 					</div>
 				</div>
 			</form>

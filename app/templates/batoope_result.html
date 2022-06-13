@@ -11,12 +11,11 @@
         <img src="{{url_for('static',filename='img/gundam2.png') }}">
     {% elif result.judgement == 'お前の勝ち！さすがだ！' %}
         <img src="{{url_for('static',filename='img/gundam1.png')}}">
-    {% %}
     {% endif %}
 
-    <p>
-        <a href="{{ url_for('batoope') }}">再戦</a>
-    </p>
+    <div class="col-3">
+        <a class="btn btn-outline-primary" href="{{ url_for('batoope') }}" role="button">再戦</a>
+    </div>
 </div>
 
 {% endblock %}
