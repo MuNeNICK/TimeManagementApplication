@@ -1,8 +1,8 @@
 from app import db
 from datetime import datetime
+from flask_login import UserMixin
 
-
-class User_info(db.Model):
+class User_info(UserMixin, db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)  # システムで使う番号
     name = db.Column(db.String(255))  # 社員名

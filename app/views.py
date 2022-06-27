@@ -1,8 +1,10 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for, flash
 from app import app 
 from random import randint
 from models.user import User_info
 from app import db
+from flask_login import UserMixin, LoginManager, login_user , logout_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/')
 def index():
@@ -21,33 +23,69 @@ def registar():
         # int, データないとき０
         # form_year = request.form.get('year', default=0, type=int)
 
+        if form_name == '' or form_mail == '' or form_password == '':
+            flash('未入力の項目があります', "failed")
+            return redirect(url_for('registar'))
+
         user = User_info(
             name=form_name,
             mail=form_mail,
-            password=form_password
+            password=generate_password_hash(form_password, method='sha256')
+            #password=form_password
             #year=form_year
         )
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        username = request.form.get('name')
+        password = request.form.get('password')
+        # Userテーブルからusernameに一致するユーザを取得
+        #名前要修正
+        user = User_info.query.filter(User_info.name == username).first() 
+        if not user or not check_password_hash(user.password, password):
+            flash('Invalid username or password', "failed")
+            return redirect(url_for('login'))
+        else:
+            login_user(user)
+            return redirect('/')
+    else:
+        return render_template('/login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.login_manager.user_loader
+def load_user(user_id):
+    return User_info.query.get(user_id)
 
 @app.route('/users')
+@login_required
 def users_list():
     users = User_info.query.all()
     return render_template('/user_list.html', users=users)
 
 @app.route('/users/<int:id>')
+@login_required
 def user_detail(id):
     user = User_info.query.get(id)
     return render_template('/user_detail.html', user=user)
 
 @app.route('/users/<int:id>/edit', methods=['GET'])
+@login_required
 def user_edit(id):
     # 編集ページ表示用
     user = User_info.query.get(id)
     return render_template('/user_edit.html', user=user)
 
 @app.route('/users/<int:id>/update', methods=['POST'])
+@login_required
 def user_update(id):
     user = User_info.query.get(id)  # 更新するデータをDBから取得
     user.name = request.form.get('name')
@@ -59,6 +97,7 @@ def user_update(id):
     return redirect(url_for('users_list'))
 
 @app.route('/users/<int:id>/delete', methods=['POST'])  
+@login_required
 def user_delete(id):  
     user = User_info.query.get(id)   
     db.session.delete(user)  
@@ -75,6 +114,7 @@ def test():
     return render_template('/test.html',chinman=chinman)
 
 @app.route('/kasuform', methods=['GET','POST'])
+@login_required
 def kasuform():
     if request.method == 'GET':
         return render_template('/kasuform.html')
@@ -84,14 +124,15 @@ def kasuform():
         return f'おまえ{data}っておくってきただろ'
 
 @app.route('/batoope',methods=['GET','POST'])
+@login_required
 def batoope():
     if request.method == 'GET':
         return render_template('/batoope.html')  
     if request.method == 'POST':
         kitai = {
-            '0' : '汎用機',
-            '1' : '支援機',
-            '2' : '強襲機'
+            '1' : '汎用機',
+            '2' : '支援機',
+            '3' : '強襲機'
         }
         gundam_mapping = {
             'draw' : '相撃ち！俺もお前も死んだ！',
@@ -101,11 +142,11 @@ def batoope():
 
         player_kitai_ja = kitai[request.form['gundam']]
         player_kitai = int(request.form['gundam'])
-        enemy_kitai = randint(0,2)
+        enemy_kitai = randint(1,3)
         enemy_kitai_ja = kitai[str(enemy_kitai)]
         if player_kitai == enemy_kitai:
             judgement = 'draw'
-        elif (player_kitai == 0 and enemy_kitai == 2) or (player_kitai == 1 and enemy_kitai == 0) or (player_kitai == 2 and enemy_kitai == 1):
+        elif (player_kitai == 1 and enemy_kitai == 3) or (player_kitai == 2 and enemy_kitai == 1) or (player_kitai == 3 and enemy_kitai == 2):
             judgement = 'win'
         else:
             judgement = 'lose'
@@ -115,3 +156,24 @@ def batoope():
             'judgement': gundam_mapping[judgement],
         }
         return render_template('/batoope_result.html', result=result)
+    
+@app.route('/learning_record', methods=['GET', 'POST'])
+def learning_record():
+    if request.method == 'GET':
+        return render_template('/learning_record.html')
+    if request.method == 'POST':
+        print('データうけとった')
+        data=request.form['dat']
+        return f'おまえ{data}っておくってきただろ'
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return redirect(url_for('login'))
+
+@app.errorhandler(404)
+def unauthorized(error):
+    return redirect(url_for('index'))
+
+@app.route('/stopwatch')
+def stopwatch():
+    return render_template('/stopwatch2.html')

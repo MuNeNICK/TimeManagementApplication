@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+<p><button id="start">開始/リセット</button><button id="pause">一時停止/再開</button><button id="wrap">ラップ</button></p>
+<p id="watchArea"></p>
+<textarea id="wrapArea"></textarea>
+<script src="{{ url_for('static', filename='javascript/stopwatch.js') }}"></script>
+{% endblock %}

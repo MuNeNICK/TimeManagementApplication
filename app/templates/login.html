@@ -1,5 +1,4 @@
-{% extends "layout2.html" %}
-
+{% extends 'layout2.html' %}
 {% block content %}
 <style>
     .failed{
@@ -9,28 +8,20 @@
 <div class="container mt-5 mb-5 d-flex justify-content-center">
 	<div class="card px-1 py-4" style="width: 400px;">
 		<div class="card-body">
-			<h6 class="card-title mb-3">新規ユーザー登録</h6>
-			{% with messages = get_flashed_messages(with_categories=true) %}
+			<h6 class="card-title mb-3">ログイン画面</h6>
+            {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
                     <p class="{{ category }}">{{ message }}</p>
                 {% endfor %}
             {% endif %}
-       		{% endwith %}
-			<form action="/registar" method="POST">
+        {% endwith %}
+			<form method="POST">
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="form-group">
 							<label for="name">ユーザー名</label>
 							<input name="name" class="form-control" type="text" placeholder="ユーザー名"></input>
-						</div>
-					</div>
-				</div>
-				<div class="row mt-2">
-					<div class="col-sm-12">
-						<div class="form-group">
-							<label for="mail">メールアドレス</label>
-							<input name="mail" class="form-control" type="text" placeholder="メールアドレス"></input>
 						</div>
 					</div>
 				</div>
@@ -42,9 +33,16 @@
 						</div>
 					</div>
 				</div>
+                <div class="row mt-3">
+                    <a>※新規登録を行っていない方は</a>
+                    <a class="text-decoration-none" href="{{ url_for('registar')}}">
+                        新規登録
+                    </a>
+                    <a>を行ってください。</a>
+                </div>
 				<div class="row mt-3">
 					<div class="col text-center">
-						<button type="submit" class="btn btn-primary">アカウント作成</button>
+						<button type="submit" class="btn btn-primary">ログイン</button>
 					</div>
 				</div>
 			</form>
