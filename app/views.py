@@ -3,8 +3,10 @@ from app import app
 from random import randint
 from models.user import User_info
 from app import db
-from flask_login import UserMixin, LoginManager, login_user , logout_user, login_required
+from flask_login import UserMixin, LoginManager, login_user , logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+# from datetime import datetime
+import datetime
 
 @app.route('/')
 def index():
@@ -113,15 +115,21 @@ def test():
     }
     return render_template('/test.html',chinman=chinman)
 
-@app.route('/kasuform', methods=['GET','POST'])
+@app.route('/form', methods=['GET','POST'])
 @login_required
-def kasuform():
+def form(nowtime):
     if request.method == 'GET':
-        return render_template('/kasuform.html')
+        user_id = current_user.get_id()
+        user = User_info.query.get(user_id)
+        now = datetime.date.today()
+        today = now.strftime ('%Y 年 %m 月 %d 日')
+        return render_template('/form.html', user=user, today=today, nowtime=nowtime)
     if request.method == 'POST':
         print('データうけとった')
         data=request.form['dat']
+        user=current_user.name
         return f'おまえ{data}っておくってきただろ'
+
 
 @app.route('/batoope',methods=['GET','POST'])
 @login_required
@@ -176,4 +184,4 @@ def unauthorized(error):
 
 @app.route('/stopwatch')
 def stopwatch():
-    return render_template('/stopwatch2.html')
+    return render_template('/stopwatch.html')

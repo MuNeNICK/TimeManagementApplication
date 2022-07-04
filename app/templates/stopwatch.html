@@ -1,7 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-<p><button id="start">開始/リセット</button><button id="pause">一時停止/再開</button><button id="wrap">ラップ</button></p>
-<p id="watchArea"></p>
-<textarea id="wrapArea"></textarea>
+<div id="stopwatch">
+    00:00:00
+</div>
+
+<ul id="buttons">
+    <li><button onclick="startTimer()">Start</button></li>
+    <li><button onclick="stopTimer()">Stop</button></li>
+    <li><button onclick="resetTimer()">Reset</button></li>
+    <li><button onclick=save(),location.href="{{ url_for('form', nowtime=nowtime) }}" >save</button></li>
+</ul>
+
+<p class=testtime></p>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/stopwatch.css') }}" >
 <script src="{{ url_for('static', filename='javascript/stopwatch.js') }}"></script>
 {% endblock %}
