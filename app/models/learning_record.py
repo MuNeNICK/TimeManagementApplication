@@ -2,7 +2,7 @@ from app import db
 from datetime import datetime
 from flask_login import UserMixin
 
-class learning_record(UserMixin, db.Model):
+class Learning_info(UserMixin, db.Model):
     __tablename__ = 'lrecord'
     id = db.Column(db.Integer, primary_key=True)  # システムで使う番号
     user_id = db.Column(db.Integer, primary_key=True)  # システムで使う番号

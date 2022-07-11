@@ -2,7 +2,7 @@ from flask import render_template,request,redirect,url_for, flash
 from app import app 
 from random import randint
 from models.user import User_info
-from models.learning_record import learning_record
+from models.learning_record import Learning_info
 from app import db
 from flask_login import UserMixin, LoginManager, login_user , logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -175,7 +175,7 @@ def batoope():
 @app.route('/lrecords')
 @login_required
 def learning_record():
-    lrecords = learning_record.query.all()
+    lrecords = Learning_info.query.all()
     return render_template('/l_record.html', lrecords=lrecords)
 
 
