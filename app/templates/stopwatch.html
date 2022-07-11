@@ -3,12 +3,11 @@
 <div id="stopwatch">
     00:00:00
 </div>
-
 <ul id="buttons">
     <li><button onclick="startTimer()">Start</button></li>
     <li><button onclick="stopTimer()">Stop</button></li>
     <li><button onclick="resetTimer()">Reset</button></li>
-    <li><button onclick=save(),location.href="{{ url_for('form', nowtime=nowtime) }}" >save</button></li>
+    <li><button onclick="save()">save</button></li>
 </ul>
 
 <p class=testtime></p>

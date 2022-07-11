@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>ぼくのちんぽ</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">じかん</th>
+              <th scope="col">なかみ</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lrecord in lrecords %}
+            <tr>
+              <th scope="row">{{ lrecord.id }}</th>
+              <td>
+                <a class="text-decoration-none" href="{{ url_for('user_detail', id=user.id) }}">
+                  {{ lrecord.nowtime }}
+                </a>
+              </td>
+              <td>{{ lrecord.record }}</td>
+              <td>
+                <form action="{{ url_for('user_delete', id=user.id) }}" method="POST">  
+                    <input class="btn btn-danger btn-sm" type="submit" value="削除">  
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+</div>
+{% endblock %}

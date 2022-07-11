@@ -2,6 +2,7 @@ from flask import render_template,request,redirect,url_for, flash
 from app import app 
 from random import randint
 from models.user import User_info
+from models.learning_record import learning_record
 from app import db
 from flask_login import UserMixin, LoginManager, login_user , logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +11,11 @@ import datetime
 
 @app.route('/')
 def index():
-    return render_template('/index.html')
+    if current_user.is_authenticated:
+    # トップページにリダイレクト
+        return render_template('/index.html')
+   
+    return redirect(url_for('login'))
 
 @app.route('/registar', methods=['GET', 'POST'])
 def registar():
@@ -47,7 +52,7 @@ def login():
         password = request.form.get('password')
         # Userテーブルからusernameに一致するユーザを取得
         #名前要修正
-        user = User_info.query.filter(User_info.name == username).first() 
+        user = User_info.query.filter(User_info.name == username).first()
         if not user or not check_password_hash(user.password, password):
             flash('Invalid username or password', "failed")
             return redirect(url_for('login'))
@@ -117,8 +122,10 @@ def test():
 
 @app.route('/form', methods=['GET','POST'])
 @login_required
-def form(nowtime):
+def form():
     if request.method == 'GET':
+        req = request.args
+        nowtime = req.get("nowtime")
         user_id = current_user.get_id()
         user = User_info.query.get(user_id)
         now = datetime.date.today()
@@ -127,7 +134,7 @@ def form(nowtime):
     if request.method == 'POST':
         print('データうけとった')
         data=request.form['dat']
-        user=current_user.name
+        # user=current_user.name
         return f'おまえ{data}っておくってきただろ'
 
 
@@ -165,14 +172,12 @@ def batoope():
         }
         return render_template('/batoope_result.html', result=result)
     
-@app.route('/learning_record', methods=['GET', 'POST'])
+@app.route('/lrecords')
+@login_required
 def learning_record():
-    if request.method == 'GET':
-        return render_template('/learning_record.html')
-    if request.method == 'POST':
-        print('データうけとった')
-        data=request.form['dat']
-        return f'おまえ{data}っておくってきただろ'
+    lrecords = learning_record.query.all()
+    return render_template('/l_record.html', lrecords=lrecords)
+
 
 @app.errorhandler(401)
 def unauthorized(error):
@@ -183,5 +188,7 @@ def unauthorized(error):
     return redirect(url_for('index'))
 
 @app.route('/stopwatch')
+@login_required
 def stopwatch():
     return render_template('/stopwatch.html')
+

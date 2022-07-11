@@ -59,7 +59,12 @@ function resetTimer() {
     min = 0;
 }
 
+
 function save(){
-    var nowtime = hr + ':' + min + ':' + sec;
-    console.log(nowtime);
+    //xhr = new XMLHttpRequest();
+    // xhr.open('POST', '/stopwatch.html', true);
+    // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    // xhr.send(timer);
+    nowtime = hr + ':' + min + ':' + sec;
+    location.href = 'http://localhost:5000/form?nowtime=' + nowtime;
 }
