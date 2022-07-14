@@ -125,17 +125,22 @@ def test():
 def form():
     if request.method == 'GET':
         req = request.args
-        nowtime = req.get("nowtime")
-        user_id = current_user.get_id()
-        user = User_info.query.get(user_id)
+        form_nowtime = req.get("nowtime")
+        form_user_id = current_user.get_id()
+        user = User_info.query.get(form_user_id)
         now = datetime.date.today()
-        today = now.strftime ('%Y 年 %m 月 %d 日')
-        return render_template('/form.html', user=user, today=today, nowtime=nowtime)
+        form_today = now.strftime ('%Y 年 %m 月 %d 日')
+        return render_template('/form.html', user=user, today=form_today, nowtime=form_nowtime)
     if request.method == 'POST':
-        print('データうけとった')
-        data=request.form['dat']
-        # user=current_user.name
-        return f'おまえ{data}っておくってきただろ'
+        form_record = request.form['dat']
+        lrecord = Learning_info(
+            user_id = form_user_id,
+            nowtime = form_nowtime,
+            record = form_record
+        )
+        db.session.add(lrecord)
+        db.session.commit()
+        return return redirect(url_for('index'))
 
 
 @app.route('/batoope',methods=['GET','POST'])
