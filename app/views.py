@@ -140,7 +140,7 @@ def form():
         )
         db.session.add(lrecord)
         db.session.commit()
-        return return redirect(url_for('index'))
+        return redirect(url_for('index'))
 
 
 @app.route('/batoope',methods=['GET','POST'])
