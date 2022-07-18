@@ -10,6 +10,7 @@
     <br>
     学習内容を入力してください。
     <form action="/form" method="POST">
+        <input type='hidden' name='time' value='{{ nowtime }}'>
         <textarea name="dat" cols="50" rows="10"></textarea><br>
         <button type="submit" class="btn btn-primary">送信</button>
     </form>

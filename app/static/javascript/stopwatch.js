@@ -66,5 +66,5 @@ function save(){
     // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
     // xhr.send(timer);
     nowtime = hr + ':' + min + ':' + sec;
-    location.href = 'http://localhost:5000/form?nowtime=' + nowtime;
+    location.href = '/form?nowtime=' + nowtime;
 }

@@ -13,7 +13,7 @@ import datetime
 def index():
     if current_user.is_authenticated:
     # トップページにリダイレクト
-        return render_template('/index.html')
+        return render_template('/stopwatch.html')
    
     return redirect(url_for('login'))
 
@@ -111,36 +111,28 @@ def user_delete(id):
     db.session.commit()  
     return redirect(url_for('users_list'))
 
-@app.route('/test')
-def test():
-    chinman = { 
-        'thing1': '男性器',
-        'thing2': '女性器',
-        'things': ['ちんこ','まんこ']
-    }
-    return render_template('/test.html',chinman=chinman)
-
 @app.route('/form', methods=['GET','POST'])
 @login_required
 def form():
+    form_user_id = current_user.get_id()
+    user = User_info.query.get(form_user_id)
+    now = datetime.date.today()
+    form_today = now.strftime ('%Y 年 %m 月 %d 日')
     if request.method == 'GET':
         req = request.args
         form_nowtime = req.get("nowtime")
-        form_user_id = current_user.get_id()
-        user = User_info.query.get(form_user_id)
-        now = datetime.date.today()
-        form_today = now.strftime ('%Y 年 %m 月 %d 日')
         return render_template('/form.html', user=user, today=form_today, nowtime=form_nowtime)
     if request.method == 'POST':
         form_record = request.form['dat']
+        form_nowtime_post = request.form['time']
         lrecord = Learning_info(
             user_id = form_user_id,
-            nowtime = form_nowtime,
+            nowtime = form_nowtime_post,
             record = form_record
         )
         db.session.add(lrecord)
         db.session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('learning_record'))
 
 
 @app.route('/batoope',methods=['GET','POST'])
@@ -176,11 +168,13 @@ def batoope():
             'judgement': gundam_mapping[judgement],
         }
         return render_template('/batoope_result.html', result=result)
-    
+
 @app.route('/lrecords')
 @login_required
 def learning_record():
-    lrecords = Learning_info.query.all()
+    form_user_id = current_user.get_id()
+    lrecords = Learning_info.query.filter(Learning_info.user_id==form_user_id)
+    # lrecords = Learning_info.query.all()
     return render_template('/l_record.html', lrecords=lrecords)
 
 
