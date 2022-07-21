@@ -9,6 +9,5 @@ services:
       - ./app:/usr/src/app
     environment:
       FLASK_ENV: "development"
-    command: flask run --host=0.0.0.0
     restart: always
 
